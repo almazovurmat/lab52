@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface ICardViewProps {
-    rank: "";
+    rank: string;
     suit: string;
 }
 
 
 const CardView: React.FC <ICardViewProps> = props => {
 
-    const cardClasses = `props.rank-${props.rank.toLowerCase()} ${props.suit}`;
+    const cardClasses = `card rank-${props.rank.toLowerCase()} ${props.suit}`;
 
     let suit;
     switch (props.suit) {
