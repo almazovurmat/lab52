@@ -15,6 +15,24 @@ class CardDeck {
             });
         });
     }
+
+    public getCard(): Card {
+        return this.cardDeckArray.splice(this.randomNumber(), 1)[0];
+    }
+
+    public getCards(howMany: number): Card[] {
+        const cards: Card[] = [];
+
+        for (let i = 0; i < howMany; i++) {
+            cards.push(this.getCard());
+        }
+
+        return cards;
+    }
+
+    private randomNumber () {
+        return Math.floor(Math.random() * this.cardDeckArray.length + 1);
+    }
 }
 
 export default CardDeck;
