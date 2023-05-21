@@ -5,3 +5,48 @@
 .playingCards {
   display: inline-block;
 }
+
+#root {
+  margin: 0 auto;
+  width: 1200px;
+  padding-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 10px 15px;
+  margin: 0 5px;
+}
+
+.pokerHandCombination {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.getCardsFirst {
+  background: #007bff;
+  padding: 15px 30px;
+  font-size: 40px;
+}
+
+.getCards {
+  background: #007bff;
+}
+
+.pokerHand {
+  background: #28a745;
+}
+
+.replaceCard {
+  background: #17a2b8;
+}
+
+.cardsBlock {
+  margin-bottom: 40px;
+}

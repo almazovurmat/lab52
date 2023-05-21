@@ -27,7 +27,7 @@ const App = () => {
     };
 
     if (cards.length <= 0) {
-        return <button onClick={distributeCards}>Раздать карты</button>;
+        return <button className="btn getCardsFirst" onClick={distributeCards}>Раздать карты</button>;
     }
 
     const toggleCardSelection = (rank: string, suit: string) => {
@@ -63,11 +63,11 @@ const App = () => {
                 ))}
             </div>
             <div>
-                <button type="button" onClick={getPokerHand}>
-                    Определить текущую руку.
+                <button className="btn pokerHand" onClick={getPokerHand}>
+                    Определить текущую руку
                 </button>
-                <button onClick={distributeCards}>Раздать карты</button>
-                <button onClick={replaceCards}>Заменить карты</button>
+                <button className="btn getCards" onClick={distributeCards}>Раздать карты</button>
+                <button className="btn replaceCard" onClick={replaceCards}>Заменить карты</button>
             </div>
         </div>
     );
