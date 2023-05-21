@@ -31,7 +31,7 @@ class CardDeck {
     }
 
     private randomNumber () {
-        return Math.floor(Math.random() * this.cardDeckArray.length + 1);
+        return Math.floor(Math.random() * (this.cardDeckArray.length - 1));
     }
 }
 
