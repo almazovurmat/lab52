@@ -1,5 +1,4 @@
 import Card from "./Card";
-import card from "./Card";
 
 class PokerHand {
 
@@ -7,19 +6,39 @@ class PokerHand {
 
     private cards: Card[] = [];
 
-    // private cards: Card[] = [
-    //     (new Card("K", "diams")),
-    //     (new Card("Q", "diams")),
-    //     (new Card("3", "diams")),
-    //     (new Card("10", "diams")),
-    //     (new Card("J", "xz")),
-    // ];
-
     constructor(cardsArray: Card[]) {
         this.cards = cardsArray;
     }
 
-    public getOutcome():string {
+    public countRank = () => {
+        interface ICountRang {
+            [rank: string]: number;
+        }
+
+        const countRang: ICountRang = {};
+        this.result.forEach((Card) => {
+            const rank = Card.rank;
+            countRang[rank] = (countRang[rank] || 0) + 1;
+        });
+
+        return countRang;
+    }
+
+    public countSuit = () => {
+        interface ICountSuit {
+            [rank: string]: number;
+        }
+
+        const countSuit: ICountSuit = {};
+        this.result.forEach((Card) => {
+            const suit = Card.suit;
+            countSuit[suit] = (countSuit[suit] || 0) + 1;
+        });
+
+        return countSuit;
+    }
+
+    public getOutcome(): string {
         this.findCombination();
 
         let combination: string = "Нет ни одной кобинации";
@@ -29,9 +48,54 @@ class PokerHand {
         } else if (this.result.length === 3) {
             combination = 'Тройка (three of a kind)';
         } else if (this.result.length === 4) {
-            combination = 'Две пары (two pairs)';
+            const countRang = this.countRank();
+
+            Object.keys(countRang).forEach(key => {
+                if (countRang[key] === 4) {
+                    combination = 'Каре/Четвёрка/Покер (four of a kind)';
+                }
+            });
+
+            if (Object.keys(countRang).length === 2) {
+                combination = 'Две пары (two pairs)';
+            }
         } else if (this.result.length === 5) {
-            combination = 'Флэш (flush)';
+
+            const countSuit = this.countSuit();
+            const countRang = this.countRank();
+
+            if (Object.keys(countRang).length === 5 && Object.keys(countSuit).length === 1) {
+                const royalFlushKeys = ["10", "J", "Q", "K", "A"];
+                let isRoyalFlush = false;
+                if (royalFlushKeys.every(key => key in countRang)) {
+                    isRoyalFlush = true;
+                    combination = 'Роял-флэш (Royal flush)';
+                }
+
+                const sortRank = Object.keys(countRang).sort();
+
+                const keysInOrder = sortRank.every((key, index, keys) => {
+                    if (index === 0) {
+                        return true;
+                    }
+                    const prevKey = keys[index - 1];
+                    return Number(key) === Number(prevKey) + 1;
+                });
+
+                if (keysInOrder) {
+                    combination = 'Стрит-флэш (straight flush)';
+                }
+
+                if (Object.keys(countSuit).length === 1 && !isRoyalFlush && !keysInOrder) {
+                    combination = 'Флэш (flush)';
+                }
+
+            } else {
+
+                if (Object.keys(countRang).length === 2) {
+                    combination = 'Фулл-хаус (full house)';
+                }
+            }
         }
 
         return combination;
@@ -56,7 +120,7 @@ class PokerHand {
             }
         }
 
-        this.result = draftArray.reduce((uniqueArray:Card[], cardObj) => {
+        this.result = draftArray.reduce((uniqueArray: Card[], cardObj) => {
             if (!uniqueArray.includes(cardObj)) {
                 uniqueArray.push(cardObj);
             }
@@ -64,9 +128,9 @@ class PokerHand {
         }, []);
     }
 
-    private findObjectsByProperty(propertyName: string, propertyValue: string){
-        return this.cards.filter(function(obj) {
-            const temp = obj[propertyName as keyof typeof obj];
+    private findObjectsByProperty(propertyName: string, propertyValue: string) {
+        return this.cards.filter(function (Card) {
+            const temp = Card[propertyName as keyof typeof Card];
             return temp === propertyValue;
         });
     }
